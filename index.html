@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Центр управления Рехобоам</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #000;
+      color: #00bfff;
+      background-image: linear-gradient(90deg, rgba(0, 255, 0, 0.25) 1px, transparent 1px),
+                        linear-gradient(rgba(0, 255, 0, 0.25) 1px, transparent 1px);
+      background-size: 40px 40px;
+    
+    }
+
+    header { display: none; }
+
+    main { padding: 40px; text-align: center; }
+
+    .card {
+      background: transparent;
+      padding: 20px;
+      border-radius: 10px;
+      max-width: 600px;
+      margin: 20px auto;
+      color: #00bfff;
+    }
+
+    input {
+      width: 80%; padding: 10px; margin-top: 5px; margin-bottom: 20px;
+      border-radius: 5px; border: 1px solid #00bfff;
+      background: #000; color: #00bfff;
+    }
+
+    label { display: block; margin-top: 10px; font-size: 18px; }
+
+    /* Квадраты */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 150px);
+      gap: 20px;
+      justify-content: center;
+    }
+
+    .square {
+      width: 150px;
+      height: 150px;
+      border: 2px solid #000;
+      background: #000;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 24px;
+      cursor: pointer;
+      color: #00bfff;
+      text-shadow: 0 0 10px #00bfff, 0 0 20px #00bfff;
+
+      transition: 0.3s;
+      user-select: none;
+    }
+
+    .active {
+      transform: scale(1.5);
+      box-shadow: 0 0 20px #fff;
+    }
+  </style>
+<style>
+#aiIcon {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 120px;
+  height: auto;
+  image-rendering: pixelated;
+  z-index: 999;
+}
+</style>
+</head>
+<body>
+
+  <main id="mainPage">
+    <div class="card">
+      <h2>Добро пожаловать в систему Рехобоама!</h2>
+      <p>Пожалуйста введите логин и пароль чтобы продолжить</p>
+
+      <label>Введите логин:</label>
+      <input id="login" type="text" placeholder="Логин" />
+
+      <label>Введите пароль:</label>
+      <input id="password" type="password" placeholder="Пароль" />
+
+      <button onclick="showSecondPage()" style="padding: 10px 20px; background: transparent; border: 1px solid #00bfff; color: #00bfff; border-radius: 5px; cursor: pointer;">Ввести данные</button>
+    </div>
+  </main>
+
+  <img id="aiIcon" src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD...TRUNCATED..." />
+  <main id="secondPage" style="display:none; text-align:center; padding:40px; background:#fff;
+      background-image: linear-gradient(90deg, rgba(0, 191, 255, 0.25) 1px, transparent 1px),
+                        linear-gradient(rgba(0, 191, 255, 0.25) 1px, transparent 1px);
+      background-size: 40px 40px;">
+      <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBwgHBhANBxAQDQ0PEA8NDg0OEA8NDw8QFREXGBgRHxgYKCklGCYlGx8TITEhJSkr..." style="position:fixed; top:20px; right:20px; width:120px; height:auto; z-index:99999; filter: drop-shadow(0 0 10px #00bfff);">
+    <h1 style="color:#00bfff; font-size:36px; margin-bottom:40px;">Добро пожаловать в систему Ровоам Келхун. Что вы желаете сегодня?</h1>
+
+    <div class="grid">
+
+      <div class="square" data-initial="Сила" data-action="doc">Сила</div>
+
+      <div class="square" data-initial="Знания" data-action="google" style="color:#50C878;">Знания</div>
+
+      <div class="square" data-initial="Сюрприз" data-action="surprise" style="font-size:20px; color:pink;">Сюрприз</div>
+
+      <div class="square"></div>
+      <div class="square"></div>
+
+      <div class="square" data-initial="Новый" data-action="new" style="color:#00bfff; font-size:20px;">Новый</div>
+
+    </div>
+  </main>
+
+  <footer>
+    <p>© 2025 Простой сайт</p>
+  </footer>
+
+  <script>
+    function showSecondPage() {
+      document.getElementById('mainPage').style.display = 'none';
+      document.getElementById('secondPage').style.display = 'block';
+    }
+
+    document.querySelectorAll('.square').forEach(el => {
+      el.addEventListener('click', () => {
+        const initial = el.dataset.initial;
+        const action = el.dataset.action;
+
+        if (el.classList.contains('active')) {
+          el.classList.remove('active');
+          if (initial) el.innerHTML = initial;
+          return;
+        }
+
+        el.classList.add('active');
+
+        if (!action) return;
+
+        if (action === 'doc') {
+          setTimeout(() => {
+            el.innerHTML = "<a href='document.docx' style='color:yellow; font-size:20px;'>Открыть документ</a>";
+          }, 300);
+        }
+
+        if (action === 'google') {
+          setTimeout(() => {
+            el.innerHTML = "<a href='https://drive.google.com' style='color:#50C878; font-size:20px;'>Открыть Google Диск</a>";
+          }, 300);
+        }
+
+        if (action === 'surprise') {
+          // Если нажали по ссылке — не активировать анимацию
+          if (el.querySelector('a')) return;
+
+          // Разворачиваем на весь экран
+          el.style.position = 'fixed';
+          el.style.top = '0';
+          el.style.left = '0';
+          el.style.width = '100vw';
+          el.style.height = '100vh';
+          el.style.zIndex = '9999';
+          el.style.background = 'black';
+          el.style.border = '2px solid white';
+          el.style.fontSize = '24px';
+
+          let messages = [
+            'Сюрприз...',
+            'Что ты тут делаешь?',
+            'Здесь ничего нет, уходи.',
+            'Ну раз так хочешь...'
+          ];
+
+          let i = 0;
+          el.innerHTML = messages[i].replace(/ /g, ' <br>');
+
+          let interval = setInterval(() => {
+            i++;
+            if (i < messages.length) {
+              el.innerHTML = messages[i].replace(/ /g, ' <br>');
+            } else {
+              clearInterval(interval);
+              el.innerHTML = "<a href='https://youtu.be/dQw4w9WgXcQ' style='color:pink; font-size:40px;'>Получить сюрприз</a>";
+            }
+          }, 3000);
+        }
+
+        if (action === 'new') {
+          setTimeout(() => { el.innerHTML = 'Новый квадрат активирован!'; }, 300);
+        }
+      });
+    });
+  // эффект печатания
+</script>
+
+<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOEAAADhCAMAAAAJbSJIAAAAeFBMVEUAAAD///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////9GxsX7AAAAJXRSTlMA+xlS5v0zzakDx4zpuEXn2WcVUUFGor3VkOqkkpFmS6r30sM2P2sAAAJUSURBVHja7d1rVpsgFIVhAUl1pRgxR7v9X9nSAAwyCqWc7P93uZkgT2tSokS09WfxuEwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgA3Zr5e3vB2S/bRMyE2mEJJm1G3OC/YLXTr4yY7N1WYV8tg7guQwT3xviH/iPzDAJrBbItdV9zYEz5Hvt8Hq1ZzQRyK1P2Z2s58HvXaPsnNT9p1JqZRe3xtZlV98F2x7KpS52Fv0fva2p2bN8YzHd5P6pVLz+59H2o1q8p9pVq2bbYz4vVbR9bOm2GN1ztDq1zvM7bn7mq2O8T6uF3Lf7tPO7bR8dH2uz4av3p62bz7nQdt3r06n73n7o0n3XW33fPZ+9XrY+ndb67n87GN2z85P7vZqO3xT3v1n1p6q6S2m7e3d7mH1O7bN2pG1T9z6Zd7xunS3puU2j6ytm5mW7k2nvWb8bU3t3j6eH7ZK72o1p
